@@ -30,10 +30,8 @@ public class VendingMachineController {
 
         Products products = vendingMachineService.createProducts(userInput);
 
-        for (Product product : products.getProducts()) {
-            System.out.println(
-                    product.getName() + ", " + product.getPrice() + ", " + product.getQuantity());
-        }
+        inputView.printInputPriceMessage();
+        int inputPrice = inputView.inputPrice();
     }
 
 }
