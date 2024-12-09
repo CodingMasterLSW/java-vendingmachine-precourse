@@ -2,7 +2,7 @@ package vendingmachine.controller;
 
 import java.util.Map;
 import java.util.function.Supplier;
-import vendingmachine.Coin;
+import vendingmachine.domain.Coin;
 import vendingmachine.domain.Products;
 import vendingmachine.domain.Insert;
 import vendingmachine.domain.VendingMachine;

@@ -3,7 +3,7 @@ package vendingmachine.service;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import vendingmachine.Coin;
+import vendingmachine.domain.Coin;
 import vendingmachine.domain.CoinManager;
 import vendingmachine.domain.Product;
 import vendingmachine.domain.Products;

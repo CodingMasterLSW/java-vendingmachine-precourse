@@ -3,7 +3,6 @@ package vendingmachine.domain;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import vendingmachine.Coin;
 import vendingmachine.utils.RandomCoin;
 
 public class CoinManager {
