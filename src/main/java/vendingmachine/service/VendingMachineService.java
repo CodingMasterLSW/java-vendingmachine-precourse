@@ -1,6 +1,5 @@
 package vendingmachine.service;
 
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +21,8 @@ public class VendingMachineService {
         Products products = Products.create();
         List<String> inputProducts = InputParser.parse(userInput);
         for (String inputProduct : inputProducts) {
-            String subInputProduct = inputProduct.substring(1, inputProduct.length() - 1);
-            List<String> splitProductInfo = Arrays.asList(subInputProduct.split(","));
-            String name = splitProductInfo.get(0);
-            int price = Integer.parseInt(splitProductInfo.get(1));
-            int quantity = Integer.parseInt(splitProductInfo.get(2));
-            Product product = Product.of(name, price, quantity);
+            List<String> splitProductInfo = InputParser.substringAndParse(inputProduct);
+            Product product = createProduct(splitProductInfo);
             products.addProduct(product);
         }
         return products;
@@ -44,7 +39,6 @@ public class VendingMachineService {
     }
 
     public void purchaseProduct(String purchaseItemName, Products products, Insert insert) {
-        // 한 번 구매하기
         Product product = products.findProduct(purchaseItemName);
         insert.decreaseAmount(product);
         product.decreaseQuantity();
@@ -52,20 +46,26 @@ public class VendingMachineService {
 
     public Map<Coin, Integer> calculateChange(Map<Coin, Integer> coinInfo, int leftAmount) {
         Map<Coin, Integer> results = new LinkedHashMap<>();
-
         for (Coin coin : coinInfo.keySet()) {
-            int coinQuantity = coinInfo.get(coin);
-            while (true) {
-                if (coin.getAmount() <= leftAmount && coinQuantity != 0) {
-                    leftAmount -= coin.getAmount();
-                    results.put(coin, results.getOrDefault(coin, 0) + 1);
-                    coinQuantity--;
-                } else{
-                    break;
-                }
-            }
+            addChangeResult(coinInfo, leftAmount, coin, results);
         }
         return results;
     }
 
+    private void addChangeResult(Map<Coin, Integer> coinInfo, int leftAmount, Coin coin,
+            Map<Coin, Integer> results) {
+        int coinQuantity = coinInfo.get(coin);
+        while (coin.getAmount() <= leftAmount && coinQuantity != 0) {
+            leftAmount -= coin.getAmount();
+            results.put(coin, results.getOrDefault(coin, 0) + 1);
+            coinQuantity--;
+        }
+    }
+
+    private Product createProduct(List<String> splitProductInfo) {
+        String name = splitProductInfo.get(0);
+        int price = Integer.parseInt(splitProductInfo.get(1));
+        int quantity = Integer.parseInt(splitProductInfo.get(2));
+        return Product.of(name, price, quantity);
+    }
 }
