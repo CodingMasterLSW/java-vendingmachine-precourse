@@ -1,6 +1,7 @@
 package vendingmachine.controller;
 
 import java.util.Map;
+import java.util.function.Supplier;
 import vendingmachine.domain.Products;
 import vendingmachine.domain.Insert;
 import vendingmachine.domain.VendingMachine;
@@ -22,24 +23,12 @@ public class VendingMachineController {
     }
 
     public void start() {
-        inputView.printCoinInputMessage();
-        int coinAmount = inputView.coinInput();
+        int coinAmount = handleCoinInput();
         VendingMachine vendingMachine = vendingMachineService.createVendingMachine(coinAmount);
-
-        Map<Integer, Integer> coinInfo = vendingMachineService.generateCoin(
-                vendingMachine);
-
-        outputView.printVendingMachineCoinMessage();
-        outputView.printGenerateCoin(coinInfo);
-
-        inputView.printProductInputMessage();
-        String userInput = inputView.userInput();
-
+        Map<Integer, Integer> coinInfo = handlePossessedCoin(coinAmount, vendingMachine);
+        String userInput = handleProductInput();
         Products products = vendingMachineService.createProducts(userInput);
-
-        inputView.printInputPriceMessage();
-        int inputPrice = inputView.inputPrice();
-        Insert insert = vendingMachineService.createPurchase(inputPrice);
+        Insert insert = handleInsertPrice();
 
         while(true) {
             if (insert.getInputAmount() < products.productsMinPrice() || !products.canPurchase()) {
@@ -54,6 +43,47 @@ public class VendingMachineController {
         Map<Integer, Integer> changeResult = vendingMachineService.calculateChange(coinInfo,
                 insert.getInputAmount());
         outputView.printChange(changeResult);
+    }
+
+    private int handleCoinInput() {
+        inputView.printCoinInputMessage();
+        return retryOnInvalidInput(() -> {
+            return inputView.coinInput();
+        });
+    }
+
+    private Map<Integer, Integer> handlePossessedCoin(int coinAmount, VendingMachine vendingMachine) {
+        Map<Integer, Integer> coinInfo = vendingMachineService.generateCoin(
+                vendingMachine);
+        outputView.printVendingMachineCoinMessage();
+        outputView.printGenerateCoin(coinInfo);
+        return coinInfo;
+    }
+
+    private String handleProductInput() {
+        inputView.printProductInputMessage();
+        return retryOnInvalidInput(() -> {
+            return inputView.userInput();
+        });
+    }
+
+    private Insert handleInsertPrice() {
+        inputView.printInputPriceMessage();
+        return retryOnInvalidInput(() -> {
+            int inputPrice = inputView.inputPrice();
+            Insert insert = vendingMachineService.createPurchase(inputPrice);
+            return insert;
+        });
+    }
+
+    private <T> T retryOnInvalidInput(Supplier<T> input) {
+        while (true) {
+            try {
+                return input.get();
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e.getMessage());
+            }
+        }
     }
 
 }
