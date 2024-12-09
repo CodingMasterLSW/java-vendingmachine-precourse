@@ -38,7 +38,7 @@ public class VendingMachineService {
         return Insert.from(inputPrice);
     }
 
-    public Map<Integer, Integer> generateCoin(VendingMachine vendingMachine) {
+    public Map<Coin, Integer> generateCoin(VendingMachine vendingMachine) {
         CoinManager coinManager = CoinManager.create();
         coinManager.generateCoin(vendingMachine.getAmount());
         return coinManager.getCoinInfo();
@@ -51,14 +51,14 @@ public class VendingMachineService {
         product.decreaseQuantity();
     }
 
-    public Map<Integer, Integer> calculateChange(Map<Integer, Integer> coinInfo, int leftAmount) {
-        Map<Integer, Integer> results = new LinkedHashMap<>();
+    public Map<Coin, Integer> calculateChange(Map<Coin, Integer> coinInfo, int leftAmount) {
+        Map<Coin, Integer> results = new LinkedHashMap<>();
 
-        for (Integer coin : coinInfo.keySet()) {
+        for (Coin coin : coinInfo.keySet()) {
             int coinQuantity = coinInfo.get(coin);
             while (true) {
-                if (coin <= leftAmount && coinQuantity != 0) {
-                    leftAmount -= coin;
+                if (coin.getAmount() <= leftAmount && coinQuantity != 0) {
+                    leftAmount -= coin.getAmount();
                     results.put(coin, results.getOrDefault(coin, 0) + 1);
                     coinQuantity--;
                 } else{

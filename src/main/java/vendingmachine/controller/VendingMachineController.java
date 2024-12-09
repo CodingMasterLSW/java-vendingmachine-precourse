@@ -2,6 +2,7 @@ package vendingmachine.controller;
 
 import java.util.Map;
 import java.util.function.Supplier;
+import vendingmachine.Coin;
 import vendingmachine.domain.Products;
 import vendingmachine.domain.Insert;
 import vendingmachine.domain.VendingMachine;
@@ -25,7 +26,7 @@ public class VendingMachineController {
     public void start() {
         int coinAmount = handleCoinInput();
         VendingMachine vendingMachine = vendingMachineService.createVendingMachine(coinAmount);
-        Map<Integer, Integer> coinInfo = handlePossessedCoin(coinAmount, vendingMachine);
+        Map<Coin, Integer> coinInfo = handlePossessedCoin(vendingMachine);
         String userInput = handleProductInput();
         Products products = vendingMachineService.createProducts(userInput);
         Insert insert = handleInsertPrice();
@@ -40,9 +41,8 @@ public class VendingMachineController {
         });
     }
 
-    private Map<Integer, Integer> handlePossessedCoin(int coinAmount,
-            VendingMachine vendingMachine) {
-        Map<Integer, Integer> coinInfo = vendingMachineService.generateCoin(
+    private Map<Coin, Integer> handlePossessedCoin(VendingMachine vendingMachine) {
+        Map<Coin, Integer> coinInfo = vendingMachineService.generateCoin(
                 vendingMachine);
         outputView.printVendingMachineCoinMessage();
         outputView.printGenerateCoin(coinInfo);
@@ -74,13 +74,12 @@ public class VendingMachineController {
         }
     }
 
-    private void handleChange(Insert insert, Map<Integer, Integer> coinInfo) {
+    private void handleChange(Insert insert, Map<Coin, Integer> coinInfo) {
         outputView.printInsertAmount(insert.getInputAmount());
-        Map<Integer, Integer> changeResult = vendingMachineService.calculateChange(coinInfo,
+        Map<Coin, Integer> changeResult = vendingMachineService.calculateChange(coinInfo,
                 insert.getInputAmount());
         outputView.printChange(changeResult);
     }
-
 
     private <T> T retryOnInvalidInput(Supplier<T> input) {
         while (true) {

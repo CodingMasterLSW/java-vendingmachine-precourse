@@ -1,6 +1,7 @@
 package vendingmachine.view;
 
 import java.util.Map;
+import vendingmachine.Coin;
 
 public class OutputView {
 
@@ -17,9 +18,9 @@ public class OutputView {
         return new OutputView();
     }
 
-    public void printGenerateCoin(Map<Integer, Integer> coinInfo) {
-        for (Integer key : coinInfo.keySet()) {
-            System.out.printf(COIN_RESULT, key, coinInfo.get(key));
+    public void printGenerateCoin(Map<Coin, Integer> coinInfo) {
+        for (Coin coin : coinInfo.keySet()) {
+            System.out.printf(COIN_RESULT, coin.getAmount(), coinInfo.get(coin));
             printMessage(BLANK);
         }
     }
@@ -35,10 +36,10 @@ public class OutputView {
         printMessage(VENDING_MACHINE_HAS_COIN_MESSAGE);
     }
 
-    public void printChange(Map<Integer, Integer> changeResult) {
+    public void printChange(Map<Coin, Integer> changeResult) {
         printMessage(CHANGE);
-        for (Integer coin : changeResult.keySet()) {
-            System.out.printf(COIN_RESULT, coin, changeResult.get(coin));
+        for (Coin coin : changeResult.keySet()) {
+            System.out.printf(COIN_RESULT, coin.getAmount(), changeResult.get(coin));
             printMessage(BLANK);
         }
 

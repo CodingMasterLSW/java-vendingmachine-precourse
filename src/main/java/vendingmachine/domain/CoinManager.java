@@ -8,13 +8,12 @@ import vendingmachine.utils.RandomCoin;
 
 public class CoinManager {
 
-                     //coin
-    private final Map<Integer, Integer> coinInfo;
+    private final Map<Coin, Integer> coinInfo;
 
     private CoinManager() {
         coinInfo = new LinkedHashMap<>();
         for (Coin coin : Coin.values()) {
-            coinInfo.put(coin.getAmount(), 0);
+            coinInfo.put(coin, 0);
         }
     }
 
@@ -25,9 +24,10 @@ public class CoinManager {
     public void generateCoin(int amount) {
         int currentAmount = 0;
         while(true) {
-            int randomCoin = RandomCoin.generate();
-            if (currentAmount+randomCoin <= amount) {
-                currentAmount += randomCoin;
+            Coin randomCoin = Coin.getCoinFromAmount(RandomCoin.generate());
+            int randomCoinAmount = randomCoin.getAmount();
+            if (currentAmount+ randomCoinAmount <= amount) {
+                currentAmount += randomCoinAmount;
                 coinInfo.put(randomCoin, coinInfo.get(randomCoin) + 1);
             }
             if (currentAmount == amount) {
@@ -36,7 +36,7 @@ public class CoinManager {
         }
     }
 
-    public Map<Integer, Integer> getCoinInfo() {
+    public Map<Coin, Integer> getCoinInfo() {
         return Collections.unmodifiableMap(coinInfo);
     }
 
