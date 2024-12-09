@@ -17,7 +17,8 @@ public class VendingMachineController {
     }
 
     public void start() {
-
+        inputView.printCoinInputMessage();
+        inputView.userInput();
     }
 
 }
