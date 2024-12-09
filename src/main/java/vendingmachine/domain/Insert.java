@@ -16,4 +16,6 @@ public class Insert {
         this.inputAmount -= product.getPrice();
     }
 
+
+
 }

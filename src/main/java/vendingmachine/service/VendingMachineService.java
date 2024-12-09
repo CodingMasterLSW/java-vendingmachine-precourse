@@ -2,6 +2,8 @@ package vendingmachine.service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import vendingmachine.domain.CoinManager;
 import vendingmachine.domain.Product;
 import vendingmachine.domain.Products;
 import vendingmachine.domain.Insert;
@@ -31,6 +33,12 @@ public class VendingMachineService {
 
     public Insert createPurchase(int inputPrice) {
         return Insert.from(inputPrice);
+    }
+
+    public Map<Integer, Integer> generateCoin(VendingMachine vendingMachine) {
+        CoinManager coinManager = CoinManager.create();
+        coinManager.generateCoin(vendingMachine.getAmount());
+        return coinManager.getCoinInfo();
     }
 
 }

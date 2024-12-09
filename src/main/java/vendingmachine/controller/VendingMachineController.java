@@ -1,5 +1,6 @@
 package vendingmachine.controller;
 
+import java.util.Map;
 import vendingmachine.domain.Products;
 import vendingmachine.domain.Insert;
 import vendingmachine.domain.VendingMachine;
@@ -24,6 +25,12 @@ public class VendingMachineController {
         inputView.printCoinInputMessage();
         int coinAmount = inputView.coinInput();
         VendingMachine vendingMachine = vendingMachineService.createVendingMachine(coinAmount);
+
+        Map<Integer, Integer> integerIntegerMap = vendingMachineService.generateCoin(
+                vendingMachine);
+        for (Integer integer : integerIntegerMap.keySet()) {
+            System.out.println(integer+"원 -" + integerIntegerMap.get(integer)+"개");
+        }
 
         inputView.printProductInputMessage();
         String userInput = inputView.userInput();
