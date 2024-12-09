@@ -21,15 +21,10 @@ public class CoinManager {
         return new CoinManager();
     }
 
-    public void generateCoin(int amount) {
+    public void generateCoins(int amount) {
         int currentAmount = 0;
         while(true) {
-            Coin randomCoin = Coin.getCoinFromAmount(RandomCoin.generate());
-            int randomCoinAmount = randomCoin.getAmount();
-            if (currentAmount+ randomCoinAmount <= amount) {
-                currentAmount += randomCoinAmount;
-                coinInfo.put(randomCoin, coinInfo.get(randomCoin) + 1);
-            }
+            currentAmount = addRandomCoin(amount, currentAmount);
             if (currentAmount == amount) {
                 break;
             }
@@ -38,6 +33,16 @@ public class CoinManager {
 
     public Map<Coin, Integer> getCoinInfo() {
         return Collections.unmodifiableMap(coinInfo);
+    }
+
+    private int addRandomCoin(int amount, int currentAmount) {
+        Coin randomCoin = Coin.getCoinFromAmount(RandomCoin.generate());
+        int randomCoinAmount = randomCoin.getAmount();
+        if (currentAmount + randomCoinAmount <= amount) {
+            currentAmount += randomCoinAmount;
+            coinInfo.put(randomCoin, coinInfo.get(randomCoin) + 1);
+        }
+        return currentAmount;
     }
 
 }
