@@ -35,9 +35,13 @@ public class OutputView {
         printMessage(VENDING_MACHINE_HAS_COIN_MESSAGE);
     }
 
-    public void printChange() {
+    public void printChange(Map<Integer, Integer> changeResult) {
         printMessage(CHANGE);
-      //  System.out.printf(COIN_RESULT);
+        for (Integer coin : changeResult.keySet()) {
+            System.out.printf(COIN_RESULT, coin, changeResult.get(coin));
+            printMessage(BLANK);
+        }
+
     }
 
     public void printErrorMessage(String message) {

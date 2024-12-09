@@ -51,12 +51,9 @@ public class VendingMachineController {
                     insert);
         }
         outputView.printInsertAmount(insert.getInputAmount());
-        Map<Integer, Integer> integerIntegerMap = vendingMachineService.calculateChange(coinInfo,
+        Map<Integer, Integer> changeResult = vendingMachineService.calculateChange(coinInfo,
                 insert.getInputAmount());
-        outputView.printChange();
-        for (Integer integer : integerIntegerMap.keySet()) {
-            System.out.println(integer+"원 - " + integerIntegerMap.get(integer)+"개");
-        }
+        outputView.printChange(changeResult);
     }
 
 }
