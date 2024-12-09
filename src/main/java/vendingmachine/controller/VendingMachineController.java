@@ -2,6 +2,7 @@ package vendingmachine.controller;
 
 import vendingmachine.domain.Product;
 import vendingmachine.domain.Products;
+import vendingmachine.domain.Purchase;
 import vendingmachine.domain.VendingMachine;
 import vendingmachine.service.VendingMachineService;
 import vendingmachine.view.InputView;
@@ -32,6 +33,7 @@ public class VendingMachineController {
 
         inputView.printInputPriceMessage();
         int inputPrice = inputView.inputPrice();
+        Purchase purchase = vendingMachineService.createPurchase(inputPrice);
     }
 
 }

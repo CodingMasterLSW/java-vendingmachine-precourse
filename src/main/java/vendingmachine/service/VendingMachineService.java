@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import vendingmachine.domain.Product;
 import vendingmachine.domain.Products;
+import vendingmachine.domain.Purchase;
 import vendingmachine.domain.VendingMachine;
 import vendingmachine.utils.InputParser;
 
@@ -26,6 +27,10 @@ public class VendingMachineService {
             products.addProduct(product);
         }
         return products;
+    }
+
+    public Purchase createPurchase(int inputPrice) {
+        return Purchase.from(inputPrice);
     }
 
 }
