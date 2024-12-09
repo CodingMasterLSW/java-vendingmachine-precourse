@@ -40,6 +40,23 @@ public class VendingMachineController {
         inputView.printInputPriceMessage();
         int inputPrice = inputView.inputPrice();
         Insert insert = vendingMachineService.createPurchase(inputPrice);
+
+        while(true) {
+            if (insert.getInputAmount() < products.productsMinPrice() || !products.canPurchase()) {
+                break;
+            }
+            outputView.printInsertAmount(insert.getInputAmount());
+            String purchaseProduct = inputView.purchaseProduct();
+            vendingMachineService.purchaseProduct(purchaseProduct, products,
+                    insert);
+        }
+        outputView.printInsertAmount(insert.getInputAmount());
+        Map<Integer, Integer> integerIntegerMap = vendingMachineService.calculateChange(coinInfo,
+                insert.getInputAmount());
+        outputView.printChange();
+        for (Integer integer : integerIntegerMap.keySet()) {
+            System.out.println(integer+"원 - " + integerIntegerMap.get(integer)+"개");
+        }
     }
 
 }

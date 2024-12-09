@@ -1,8 +1,11 @@
 package vendingmachine.service;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import vendingmachine.Coin;
 import vendingmachine.domain.CoinManager;
 import vendingmachine.domain.Product;
 import vendingmachine.domain.Products;
@@ -39,6 +42,31 @@ public class VendingMachineService {
         CoinManager coinManager = CoinManager.create();
         coinManager.generateCoin(vendingMachine.getAmount());
         return coinManager.getCoinInfo();
+    }
+
+    public void purchaseProduct(String purchaseItemName, Products products, Insert insert) {
+        // 한 번 구매하기
+        Product product = products.findProduct(purchaseItemName);
+        insert.decreaseAmount(product);
+        product.decreaseQuantity();
+    }
+
+    public Map<Integer, Integer> calculateChange(Map<Integer, Integer> coinInfo, int leftAmount) {
+        Map<Integer, Integer> results = new LinkedHashMap<>();
+
+        for (Integer coin : coinInfo.keySet()) {
+            int coinQuantity = coinInfo.get(coin);
+            while (true) {
+                if (coin <= leftAmount && coinQuantity != 0) {
+                    leftAmount -= coin;
+                    results.put(coin, results.getOrDefault(coin, 0) + 1);
+                    coinQuantity--;
+                } else{
+                    break;
+                }
+            }
+        }
+        return results;
     }
 
 }

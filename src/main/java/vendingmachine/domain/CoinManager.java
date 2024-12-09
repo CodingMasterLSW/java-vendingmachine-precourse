@@ -1,9 +1,7 @@
 package vendingmachine.domain;
 
 import java.util.Collections;
-import java.util.EnumMap;
-
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import vendingmachine.Coin;
 import vendingmachine.utils.RandomCoin;
@@ -13,7 +11,7 @@ public class CoinManager {
     private final Map<Integer, Integer> coinInfo;
 
     private CoinManager() {
-        coinInfo = new HashMap<>();
+        coinInfo = new LinkedHashMap<>();
         for (Coin coin : Coin.values()) {
             coinInfo.put(coin.getAmount(), 0);
         }
@@ -40,4 +38,5 @@ public class CoinManager {
     public Map<Integer, Integer> getCoinInfo() {
         return Collections.unmodifiableMap(coinInfo);
     }
+
 }

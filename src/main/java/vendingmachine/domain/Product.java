@@ -24,6 +24,10 @@ public class Product {
         return price;
     }
 
+    public void decreaseQuantity() {
+        this.quantity --;
+    }
+
     public int getQuantity() {
         return quantity;
     }
