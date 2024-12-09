@@ -29,20 +29,8 @@ public class VendingMachineController {
         String userInput = handleProductInput();
         Products products = vendingMachineService.createProducts(userInput);
         Insert insert = handleInsertPrice();
-
-        while(true) {
-            if (insert.getInputAmount() < products.productsMinPrice() || !products.canPurchase()) {
-                break;
-            }
-            outputView.printInsertAmount(insert.getInputAmount());
-            String purchaseProduct = inputView.purchaseProduct();
-            vendingMachineService.purchaseProduct(purchaseProduct, products,
-                    insert);
-        }
-        outputView.printInsertAmount(insert.getInputAmount());
-        Map<Integer, Integer> changeResult = vendingMachineService.calculateChange(coinInfo,
-                insert.getInputAmount());
-        outputView.printChange(changeResult);
+        handlePurchaseProduct(insert, products);
+        handleChange(insert, coinInfo);
     }
 
     private int handleCoinInput() {
@@ -52,7 +40,8 @@ public class VendingMachineController {
         });
     }
 
-    private Map<Integer, Integer> handlePossessedCoin(int coinAmount, VendingMachine vendingMachine) {
+    private Map<Integer, Integer> handlePossessedCoin(int coinAmount,
+            VendingMachine vendingMachine) {
         Map<Integer, Integer> coinInfo = vendingMachineService.generateCoin(
                 vendingMachine);
         outputView.printVendingMachineCoinMessage();
@@ -75,6 +64,23 @@ public class VendingMachineController {
             return insert;
         });
     }
+
+    private void handlePurchaseProduct(Insert insert, Products products) {
+        while (insert.getInputAmount() >= products.productsMinPrice() && products.canPurchase()) {
+            outputView.printInsertAmount(insert.getInputAmount());
+            String purchaseProduct = inputView.purchaseProduct();
+            vendingMachineService.purchaseProduct(purchaseProduct, products,
+                    insert);
+        }
+    }
+
+    private void handleChange(Insert insert, Map<Integer, Integer> coinInfo) {
+        outputView.printInsertAmount(insert.getInputAmount());
+        Map<Integer, Integer> changeResult = vendingMachineService.calculateChange(coinInfo,
+                insert.getInputAmount());
+        outputView.printChange(changeResult);
+    }
+
 
     private <T> T retryOnInvalidInput(Supplier<T> input) {
         while (true) {

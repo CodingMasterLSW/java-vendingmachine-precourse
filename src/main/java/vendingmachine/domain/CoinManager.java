@@ -8,6 +8,7 @@ import vendingmachine.utils.RandomCoin;
 
 public class CoinManager {
 
+                     //coin
     private final Map<Integer, Integer> coinInfo;
 
     private CoinManager() {
