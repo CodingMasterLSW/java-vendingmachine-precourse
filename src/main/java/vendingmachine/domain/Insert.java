@@ -1,15 +1,15 @@
 package vendingmachine.domain;
 
-public class Purchase {
+public class Insert {
 
     private int inputAmount;
 
-    private Purchase(int inputAmount) {
+    private Insert(int inputAmount) {
         this.inputAmount = inputAmount;
     }
 
-    public static Purchase from(int inputAmount) {
-        return new Purchase(inputAmount);
+    public static Insert from(int inputAmount) {
+        return new Insert(inputAmount);
     }
 
     public void decreaseAmount(Product product) {
