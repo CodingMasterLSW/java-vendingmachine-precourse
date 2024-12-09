@@ -11,6 +11,8 @@ public class InputView {
 
     private static final Pattern NUMBER = Pattern.compile("\\d+");
     private static final String COIN_INPUT_MESSAGE = "자판기가 보유하고 있는 금액을 입력해 주세요.";
+    private static final String PRODUCT_INPUT_MESSAGE = "상품명과 가격, 수량을 입력해 주세요.";
+    private static final String BLANK = "";
     private static final int MIN_DIGIT = 10;
 
     private InputView() {
@@ -22,6 +24,11 @@ public class InputView {
 
     public void printCoinInputMessage() {
         printMessage(COIN_INPUT_MESSAGE);
+    }
+
+    public void printProductInputMessage() {
+        printMessage(BLANK);
+        printMessage(PRODUCT_INPUT_MESSAGE);
     }
 
     public int coinInput() {

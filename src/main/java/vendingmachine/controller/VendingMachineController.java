@@ -21,7 +21,9 @@ public class VendingMachineController {
         inputView.printCoinInputMessage();
         int coinAmount = inputView.coinInput();
         VendingMachine vendingMachine = vendingMachineService.createVendingMachine(coinAmount);
-        System.out.println(vendingMachine.getAmount());
+
+        inputView.printProductInputMessage();
+        String userInput = inputView.userInput();
     }
 
 }
