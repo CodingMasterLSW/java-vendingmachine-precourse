@@ -26,11 +26,11 @@ public class VendingMachineController {
         int coinAmount = inputView.coinInput();
         VendingMachine vendingMachine = vendingMachineService.createVendingMachine(coinAmount);
 
-        Map<Integer, Integer> integerIntegerMap = vendingMachineService.generateCoin(
+        Map<Integer, Integer> coinInfo = vendingMachineService.generateCoin(
                 vendingMachine);
-        for (Integer integer : integerIntegerMap.keySet()) {
-            System.out.println(integer+"원 -" + integerIntegerMap.get(integer)+"개");
-        }
+
+        outputView.printVendingMachineCoinMessage();
+        outputView.printGenerateCoin(coinInfo);
 
         inputView.printProductInputMessage();
         String userInput = inputView.userInput();
