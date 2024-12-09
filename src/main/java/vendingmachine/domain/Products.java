@@ -1,7 +1,6 @@
 package vendingmachine.domain;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Products {
@@ -20,10 +19,6 @@ public class Products {
         products.add(product);
     }
 
-    public List<Product> getProducts() {
-        return Collections.unmodifiableList(products);
-    }
-
     public Product findProduct(String productName) {
         return products.stream()
                 .filter(product -> product.getName().equals(productName))
@@ -32,22 +27,14 @@ public class Products {
     }
 
     public int productsMinPrice() {
-        int minProductPrice = Integer.MAX_VALUE;
-        for (Product product : products) {
-            if (minProductPrice > product.getPrice()) {
-                minProductPrice = product.getPrice();
-            }
-        }
-        return minProductPrice;
+        return products.stream()
+                .mapToInt(Product::getPrice)
+                .min()
+                .orElse(Integer.MAX_VALUE);
     }
 
     public boolean canPurchase() {
-        boolean status = false;
-        for (Product product : products) {
-            if (product.getQuantity() != 0) {
-                status = true;
-            }
-        }
-        return status;
+        return products.stream()
+                .anyMatch(product -> product.getQuantity() != 0);
     }
 }

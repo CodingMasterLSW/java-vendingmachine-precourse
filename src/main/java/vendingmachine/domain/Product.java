@@ -31,4 +31,8 @@ public class Product {
     public int getQuantity() {
         return quantity;
     }
+
+    public boolean hasName(String name) {
+        return this.name.equals(name);
+    }
 }
