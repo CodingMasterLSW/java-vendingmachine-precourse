@@ -1,5 +1,6 @@
 package vendingmachine.controller;
 
+import vendingmachine.domain.VendingMachine;
 import vendingmachine.service.VendingMachineService;
 import vendingmachine.view.InputView;
 import vendingmachine.view.OutputView;
@@ -18,7 +19,9 @@ public class VendingMachineController {
 
     public void start() {
         inputView.printCoinInputMessage();
-        inputView.coinInput();
+        int coinAmount = inputView.coinInput();
+        VendingMachine vendingMachine = vendingMachineService.createVendingMachine(coinAmount);
+        System.out.println(vendingMachine.getAmount());
     }
 
 }
